@@ -53,7 +53,6 @@ data class Data(
 
 ## Kotlin Coroutine Example
 
-
 ### request
 
  ```kotlin
@@ -62,7 +61,7 @@ private fun sendRequest(currency: String) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 withTimeout(30000){
-                    val response = BitPayRates.ExchangeListAPI.retrofitService.getBtcResponse(currency)
+                    val response = BitPayRates.ExchangeListAPI.retrofitService.getRateResponse(currency)
                     withContext(Dispatchers.Main){
                         _exchangeList.value = response.body()?.data
                         println("response.body()?.data = ${response.body()}")
@@ -75,6 +74,31 @@ private fun sendRequest(currency: String) {
     }
 ```
 
+
+## LiveData & Observer Example
+
+### data
+
+ ```kotlin
+ // set live data with mutable data
+private val _exchangeList = MutableLiveData<List<Data>?>()
+    val exchangeData: LiveData<List<Data>?> = _exchangeList
+    ...
+    // set value with response data
+    _exchangeList.value = response.body()?.data
+```
+### observer
+
+ ```kotlin
+// Set Adapter Data from live data
+        viewModel.exchangeData.observe(viewLifecycleOwner, {
+            if(it != null && it.isNotEmpty()){
+                currencyAdapter.data = setImageSrc(it)
+            }else{
+                println("no data to show")
+            }
+        })
+```
 
 
 ## Navigation Graph Usage Example
