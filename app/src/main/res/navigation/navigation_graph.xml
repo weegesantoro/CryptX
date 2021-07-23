@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_graph"
+    app:startDestination="@+id/exchangeList">
+
+    <fragment
+        android:id="@+id/exchangeList"
+        android:name="com.example.cryptoexchange.ui.dashboard.ExchangeList"
+        android:label="exchange_list_fragment"
+        tools:layout="@layout/exchange_list_fragment" />
+    <fragment
+        android:id="@+id/launchScreen"
+        android:name="com.example.cryptoexchange.ui.onboarding.LaunchScreen"
+        android:label="launch_screen_fragment"
+        tools:layout="@layout/launch_screen_fragment" >
+        <action
+            android:id="@+id/action_launchScreen_to_exchangeList"
+            app:destination="@id/exchangeList"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out" />
+    </fragment>
+</navigation>
