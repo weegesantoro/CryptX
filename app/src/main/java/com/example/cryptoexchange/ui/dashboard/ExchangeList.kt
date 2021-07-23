@@ -72,7 +72,7 @@ class ExchangeList : Fragment() {
         }
 
         // make first default call with Bitcoin
-        viewModel.getBTCeRates()
+        viewModel.getRates("BTC")
 
         // animate view in
         binding.masterConstraint.apply {
@@ -127,34 +127,33 @@ class ExchangeList : Fragment() {
                 }
             }
 
-
             // set button listeners
             btcButton.setOnClickListener {
-                currencySelected("btc")
+                currencySelected("BTC")
                 moveHighlighter(btcButton)
                 currencyChangeBtn.text = "Bitcoin (BTC)"
                 currencyChangeBtn.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.bitcoin_gold))
             }
             bchButton.setOnClickListener {
-                currencySelected("bch")
+                currencySelected("BCH")
                 moveHighlighter(bchButton)
                 currencyChangeBtn.text = "Btc Cash (BCH)"
                 currencyChangeBtn.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.btccash_green))
             }
             ethButton.setOnClickListener {
-                currencySelected("eth")
+                currencySelected("ETH")
                 moveHighlighter(ethButton)
                 currencyChangeBtn.text = "Etherium (ETH)"
                 currencyChangeBtn.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.etherium_blue))
             }
             xrpButton.setOnClickListener {
-                currencySelected("xrp")
+                currencySelected("XRP")
                 moveHighlighter(xrpButton)
                 currencyChangeBtn.text = "Ripple (XRP)"
                 currencyChangeBtn.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.ripple_black))
             }
             dogeButton.setOnClickListener {
-                currencySelected("doge")
+                currencySelected("DOGE")
                 moveHighlighter(dogeButton)
                 currencyChangeBtn.text = "Dogecoin (DOGE)"
                 currencyChangeBtn.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.doge_mustard))
@@ -165,20 +164,22 @@ class ExchangeList : Fragment() {
 
     }
 
-    private fun currencySelected(s: String) {
-        when (s) {
-            "btc" -> viewModel.getBTCeRates()
-            "bch" -> viewModel.getBCHeRates()
-            "eth" -> viewModel.getETHeRates()
-            "xrp" -> viewModel.getXRPeRates()
-            "doge" -> viewModel.getDOGEeRates()
+    private fun currencySelected(code: String) {
+
+        when (code) {
+            "BTC","BCH","ETH","XRP","DOGE" -> viewModel.getRates(code)
             else -> {
                 println("nothing selected")
             }
         }
 
-        binding.apply {
+        // close popup & overlay with fade animation
+        closeSelectionPopup()
+    }
 
+    private fun closeSelectionPopup() {
+        // close popup with fade animation
+        binding.apply {
             // animate and hide - overlay
             popupOverlay.animate().apply {
                 duration = 100
@@ -195,7 +196,7 @@ class ExchangeList : Fragment() {
     }
 
     private fun moveHighlighter(btn: Button) {
-
+        // move highlighter to show currently selected item
         val highlightLayout = binding.currencyHighlighter.layoutParams as ConstraintLayout.LayoutParams // btn is a View here
         highlightLayout.topToTop = btn.id // resource ID of new parent field
         highlightLayout.bottomToBottom = btn.id // resource ID of new parent field

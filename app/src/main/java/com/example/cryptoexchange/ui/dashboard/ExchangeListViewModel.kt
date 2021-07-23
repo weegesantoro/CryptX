@@ -13,83 +13,19 @@ class ExchangeListViewModel : ViewModel() {
     private val _exchangeList = MutableLiveData<List<Data>?>()
     val exchangeData: LiveData<List<Data>?> = _exchangeList
 
-    fun listReset(list: List<Data>) {
-        _exchangeList.value = list
+
+    fun getRates(code: String){
+        sendRequest(code)
     }
 
-    fun getBTCeRates(){
+    private fun sendRequest(currency: String) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 withTimeout(30000){
-                    val response = BitPayRates.ExchangeListAPI.retrofitService.getBtcResponse()
+                    val response = BitPayRates.ExchangeListAPI.retrofitService.getBtcResponse(currency)
                     withContext(Dispatchers.Main){
                         _exchangeList.value = response.body()?.data
                         println("response.body()?.data = ${response.body()}")
-                    }
-                }
-            }catch (e: Exception){
-                e.printStackTrace()
-            }
-        }
-    }
-
-
-    fun getBCHeRates(){
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                withTimeout(30000){
-                    val response = BitPayRates.ExchangeListAPI.retrofitService.getBchResponse()
-                    withContext(Dispatchers.Main){
-                        _exchangeList.value = response.body()?.data
-                        println("response.body()?.data = ${response.body()}")
-                    }
-                }
-            }catch (e: Exception){
-                e.printStackTrace()
-            }
-        }
-    }
-
-
-
-    fun getETHeRates(){
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                withTimeout(30000){
-                    val response = BitPayRates.ExchangeListAPI.retrofitService.getEthResponse()
-                    withContext(Dispatchers.Main){
-                        _exchangeList.value = response.body()?.data
-                    }
-                }
-            }catch (e: Exception){
-                e.printStackTrace()
-            }
-        }
-    }
-
-    fun getXRPeRates(){
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                withTimeout(30000){
-                    val response = BitPayRates.ExchangeListAPI.retrofitService.getXrpResponse()
-                    withContext(Dispatchers.Main){
-                        _exchangeList.value = response.body()?.data
-                    }
-                }
-            }catch (e: Exception){
-                e.printStackTrace()
-            }
-        }
-    }
-
-
-    fun getDOGEeRates(){
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                withTimeout(30000){
-                    val response = BitPayRates.ExchangeListAPI.retrofitService.getDogeResponse()
-                    withContext(Dispatchers.Main){
-                        _exchangeList.value = response.body()?.data
                     }
                 }
             }catch (e: Exception){

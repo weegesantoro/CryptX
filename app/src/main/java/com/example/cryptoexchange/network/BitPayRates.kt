@@ -6,13 +6,14 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Path
 import java.util.concurrent.TimeUnit
 
 class BitPayRates {
 
     companion object {
 
-        private const val BASE_URL = "https://bitpay.com/rates/"//example: BTC
+        private const val BASE_URL = "https://bitpay.com/"//example: BTC
 
         private val okHttpClientBuilder = OkHttpClient.Builder()
             .readTimeout(30, TimeUnit.SECONDS)
@@ -31,20 +32,10 @@ class BitPayRates {
 
     interface ExchangeRequest {
 
-        @GET("BTC")
-        suspend fun getBtcResponse(): Response<ExchangeResponse>
-
-        @GET("BCH")
-        suspend fun getBchResponse(): Response<ExchangeResponse>
-
-        @GET("ETH")
-        suspend fun getEthResponse(): Response<ExchangeResponse>
-
-        @GET("XRP")
-        suspend fun getXrpResponse(): Response<ExchangeResponse>
-
-        @GET("DOGE")
-        suspend fun getDogeResponse(): Response<ExchangeResponse>
+        @GET("rates/{currency}")
+        suspend fun getBtcResponse(
+            @Path("currency") currency: String
+        ): Response<ExchangeResponse>
     }
 
 
