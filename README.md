@@ -4,7 +4,7 @@ App showing usage of newest Android Jetpack and Kotlin language features
 
 ## Retrofit & Moshi Usage Example
 
-Two basic reyclerviews were created to show how network requests are made using Retrofit, how the response is handled, and how incoming Json can be parsed with Moshi
+A recyclerview was created to show how network requests are made using Retrofit, how the response is handled, and how incoming Json can be parsed with Moshi
 
 <img src="images/retro_moshi_1.png" width="350"/>, <img src="images/retro_moshi_2.png" width="350"/>
 
