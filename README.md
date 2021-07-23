@@ -29,20 +29,10 @@ private val retrofit = Retrofit.Builder()
  ```kotlin
 interface ExchangeRequest {
 
-        @GET("BTC")
-        suspend fun getBtcResponse(): Response<ExchangeResponse>
-
-        @GET("BCH")
-        suspend fun getBchResponse(): Response<ExchangeResponse>
-
-        @GET("ETH")
-        suspend fun getEthResponse(): Response<ExchangeResponse>
-
-        @GET("XRP")
-        suspend fun getXrpResponse(): Response<ExchangeResponse>
-
-        @GET("DOGE")
-        suspend fun getDogeResponse(): Response<ExchangeResponse>
+        @GET("rates/{currency}")
+        suspend fun getBtcResponse(
+            @Path("currency") currency: String
+        ): Response<ExchangeResponse>
     }
 ```
 
@@ -58,6 +48,56 @@ data class Data(
     @Transient
     var iconId: Int = 0
 )
+```
+
+
+## Kotlin Coroutine Example
+
+### request
+
+ ```kotlin
+private fun sendRequest(currency: String) {
+        
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                withTimeout(30000){
+                    val response = BitPayRates.ExchangeListAPI.retrofitService.getRateResponse(currency)
+                    withContext(Dispatchers.Main){
+                        _exchangeList.value = response.body()?.data
+                        println("response.body()?.data = ${response.body()}")
+                    }
+                }
+            }catch (e: Exception){
+                e.printStackTrace()
+            }
+        }
+    }
+```
+
+
+## LiveData & Observer Example
+
+### data
+
+ ```kotlin
+ // set live data with mutable data
+private val _exchangeList = MutableLiveData<List<Data>?>()
+    val exchangeData: LiveData<List<Data>?> = _exchangeList
+    ...
+    // set value with response data
+    _exchangeList.value = response.body()?.data
+```
+### observer
+
+ ```kotlin
+// Set Adapter Data from live data
+        viewModel.exchangeData.observe(viewLifecycleOwner, {
+            if(it != null && it.isNotEmpty()){
+                currencyAdapter.data = setImageSrc(it)
+            }else{
+                println("no data to show")
+            }
+        })
 ```
 
 
