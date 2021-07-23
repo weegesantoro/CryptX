@@ -33,7 +33,7 @@ class BitPayRates {
     interface ExchangeRequest {
 
         @GET("rates/{currency}")
-        suspend fun getBtcResponse(
+        suspend fun getRateResponse(
             @Path("currency") currency: String
         ): Response<ExchangeResponse>
     }

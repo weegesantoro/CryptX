@@ -19,10 +19,11 @@ class ExchangeListViewModel : ViewModel() {
     }
 
     private fun sendRequest(currency: String) {
+
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 withTimeout(30000){
-                    val response = BitPayRates.ExchangeListAPI.retrofitService.getBtcResponse(currency)
+                    val response = BitPayRates.ExchangeListAPI.retrofitService.getRateResponse(currency)
                     withContext(Dispatchers.Main){
                         _exchangeList.value = response.body()?.data
                         println("response.body()?.data = ${response.body()}")
