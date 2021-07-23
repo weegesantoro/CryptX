@@ -1,4 +1,4 @@
-# Crypt-X
+# Crypt-X Test Application
 App showing usage of newest Android Jetpack and Kotlin language features
 
 
@@ -53,6 +53,8 @@ data class Data(
 
 ## Kotlin Coroutine Example
 
+A *coroutine* is an instance of suspendable computation. It is conceptually similar to a thread, in the sense that it takes a block of code to run that works concurrently with the rest of the code. However, a coroutine is not bound to any particular thread. It may suspend its execution in one thread and resume in another one.
+
 ### request
 
  ```kotlin
@@ -76,6 +78,8 @@ private fun sendRequest(currency: String) {
 
 
 ## LiveData & Observer Example
+
+LiveData is an observable data holder class. Unlike a regular observable, LiveData is lifecycle-aware, meaning it respects the lifecycle of other app components, such as activities, fragments, or services. This awareness ensures LiveData only updates app component observers that are in an active lifecycle state.
 
 ### data
 
