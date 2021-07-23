@@ -10,13 +10,14 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.cryptoexchange.R
 import com.example.cryptoexchange.adapters.CurrencyListAdapter
 import com.example.cryptoexchange.adapters.CurrencyListListener
-import com.example.cryptoexchange.data.Data
+import com.example.cryptoexchange.data.*
 import com.example.cryptoexchange.databinding.ExchangeListFragmentBinding
 
 class ExchangeList : Fragment() {
@@ -127,36 +128,22 @@ class ExchangeList : Fragment() {
                 }
             }
 
+
             // set button listeners
             btcButton.setOnClickListener {
-                currencySelected("BTC")
-                moveHighlighter(btcButton)
-                currencyChangeBtn.text = "Bitcoin (BTC)"
-                currencyChangeBtn.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.bitcoin_gold))
+                onClick(BtcTheme, btcButton, currencyChangeBtn)
             }
             bchButton.setOnClickListener {
-                currencySelected("BCH")
-                moveHighlighter(bchButton)
-                currencyChangeBtn.text = "Btc Cash (BCH)"
-                currencyChangeBtn.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.btccash_green))
+                onClick(BchTheme, bchButton, currencyChangeBtn)
             }
             ethButton.setOnClickListener {
-                currencySelected("ETH")
-                moveHighlighter(ethButton)
-                currencyChangeBtn.text = "Etherium (ETH)"
-                currencyChangeBtn.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.etherium_blue))
+                onClick(EthTheme, ethButton, currencyChangeBtn)
             }
             xrpButton.setOnClickListener {
-                currencySelected("XRP")
-                moveHighlighter(xrpButton)
-                currencyChangeBtn.text = "Ripple (XRP)"
-                currencyChangeBtn.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.ripple_black))
+                onClick(XrpTheme, xrpButton, currencyChangeBtn)
             }
             dogeButton.setOnClickListener {
-                currencySelected("DOGE")
-                moveHighlighter(dogeButton)
-                currencyChangeBtn.text = "Dogecoin (DOGE)"
-                currencyChangeBtn.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.doge_mustard))
+                onClick(DogeTheme, dogeButton, currencyChangeBtn)
             }
 
         }
@@ -201,6 +188,17 @@ class ExchangeList : Fragment() {
         highlightLayout.topToTop = btn.id // resource ID of new parent field
         highlightLayout.bottomToBottom = btn.id // resource ID of new parent field
         binding.currencyHighlighter.layoutParams = highlightLayout
+    }
+
+
+    private fun onClick(coinTheme: CoinTheme, button: Button, currencyChangeBtn: Button) {
+        currencySelected(coinTheme.id)
+        moveHighlighter(button)
+        currencyChangeBtn.text = coinTheme.displayName
+        context?.let {
+            currencyChangeBtn.backgroundTintList =
+                ColorStateList.valueOf(ContextCompat.getColor(it, coinTheme.color))
+        }
     }
 
 
